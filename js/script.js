@@ -139,11 +139,3 @@ function selectItemCombobox(eleSelected) {
     combobox.focus();
     dataListEle.addClass('hide');
 }
-
-/**
- * Hàm làm sạch danh sách của combobox.
- */
-function clearDataList() {
-    dataListEle.html('');
-    dataListEle.addClass('hide');
-}
