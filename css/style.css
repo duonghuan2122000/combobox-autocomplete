@@ -30,7 +30,7 @@
     background-image: url("../assets/chevron-down.png");
     background-position: center;
     background-repeat: no-repeat;
-    background-size: 24px 24px;
+    background-size: 16px 16px;
     border-left: 1px solid #e5e5e5;
     cursor: pointer;
 }
@@ -91,4 +91,9 @@
 .cb-autocomplete .datalist li:hover .item-text,
 .cb-autocomplete .datalist li.hover .item-text {
     color: #000;
+}
+
+.cb-autocomplete.error .cb, 
+.cb-autocomplete.error .icon {
+    border-color: #f20;
 }

@@ -1,57 +1,85 @@
+/**
+ * Danh sách combobox.
+ */
 const list = [
     { value: 0, text: "Nữ" },
     { value: 1, text: "Nam" },
     { value: 2, text: "Khác" },
 ];
-const dataListEle = $('.cb-autocomplete .datalist');
-const combobox = $('.cb-autocomplete .cb');
 
+/**
+ * Thẻ bao ngoài cùng combobox.
+ */
+const cbBox = $('.cb-autocomplete');
+
+/**
+ * Thẻ chứa danh sách của combobox.
+ */
+const dataListEle = cbBox.find('.datalist');
+
+/**
+ * Input của combobox.
+ */
+const combobox = cbBox.find('.cb');
+
+/**
+ * Phần tử hiện tại đang được hover trong combobox.
+ */
 let index = -1;
+
+/**
+ * Item đang được chọn.
+ */
+let selectedItem = null;
 
 $(function () {
 
-    combobox.on({
-        // sự kiện nhập vào input.
-        input: function (e) {
-            e.preventDefault();
-            let val = $(this).val();
-            let datalist = list.filter((item) => item.text.toLocaleLowerCase().includes(val.toLocaleLowerCase()));
-            bindDataListToHtml(datalist, val);
-            index = -1;
-        },
-    });
-
-    $('.cb-autocomplete').on('blur', function () {
-        dataListEle.addClass('hide');
-    });
-
-    $('.cb-autocomplete').on('click', '.datalist li', function (e) {
+    // sự kiện nhập vào input của combobox.
+    combobox.on('input', function (e) {
         e.preventDefault();
-        $(this).addClass('selected');
-        $(this).siblings('.selected').removeClass('selected');
-        let data = $(this).data();
-        combobox.val(data.text);
-        combobox.focus();
-        dataListEle.addClass('hide');
+        let val = $(this).val();
+        if (val === '') {
+            cbBox.removeClass('error');
+        }
+        let datalist = list.filter((item) => item.text.toLocaleLowerCase().includes(val.toLocaleLowerCase()));
+        if (datalist.length == 0) {
+            cbBox.addClass('error');
+        }
+        bindDataListToHtml(datalist);
+        index = -1;
     });
 
-    $('.cb-autocomplete .icon').on('click', function () {
+    // sự kiện click vào một item trong danh sách của combobox.
+    cbBox.on('mousedown', '.datalist li', function (e) {
+        e.preventDefault();
+        selectItemCombobox($(this));
+    });
+
+    // sự kiện click vào icon toggle của combobox.
+    cbBox.find('.icon').on('click', function (e) {
+        e.preventDefault();
         if (dataListEle.hasClass('hide')) {
             combobox.focus();
-            if (dataListEle.html() == '') {
-                bindDataListToHtml(list);
-            }
-            dataListEle.removeClass('hide');
+            bindDataListToHtml(list);
             index = -1;
         } else {
             dataListEle.addClass('hide');
         }
     });
 
-    $(".cb-autocomplete").on('keydown', function (e) {
+    // sự kiện lose focus trong input combobox.
+    cbBox.on('focusout', function (e) {
+        e.preventDefault();
+        dataListEle.addClass('hide');
+    })
+
+    // sự kiện nhấn phím trong combobox.
+    cbBox.on('keydown', function (e) {
         let keyCode = e.keyCode;
         let count = dataListEle.find('li').length;
+
         if (keyCode == 40) {
+            // khi nhấn phím mũi tên xuống.
             e.preventDefault();
 
             if (index < count - 1) {
@@ -61,6 +89,7 @@ $(function () {
             }
 
         } else if (keyCode == 38) {
+            // khi nhấn phím mũi tên lên.
             e.preventDefault();
             if (index > 0) {
                 dataListEle.find('li').eq(index).removeClass('hover');
@@ -68,20 +97,20 @@ $(function () {
                 index--;
             }
         } else if (keyCode == 13) {
+            // khi nhấn chọn enter.
             e.preventDefault();
             let _this = dataListEle.find('li.hover');
-            _this.addClass('selected');
-            _this.siblings('.selected').removeClass('selected');
-            let data = _this.data();
-            combobox.val(data.text);
-            combobox.focus();
-            dataListEle.addClass('hide');
+            selectItemCombobox(_this);
         }
     });
 
 });
 
-function bindDataListToHtml(datalist, val) {
+/**
+ * Hàm bind data vào html cho danh sách combobox.
+ * @param {Array} datalist danh sách hiện tại của combobox.
+ */
+function bindDataListToHtml(datalist) {
     dataListEle.html('');
     datalist.forEach((item) => {
         var dataItem = $(`
@@ -90,7 +119,7 @@ function bindDataListToHtml(datalist, val) {
                 <span class="item-text">${item.text}</span>
             </li>
         `);
-        if (item.text === val) {
+        if (selectedItem && selectedItem.value == item.value) {
             dataItem.addClass('selected');
         }
         dataItem.data(item);
@@ -99,6 +128,21 @@ function bindDataListToHtml(datalist, val) {
     dataListEle.removeClass('hide');
 }
 
+/**
+ * Hàm chọn một item trong danh sách của combobox.
+ * @param {Element} eleSelected Item được chọn trong danh sách của combobox.
+ */
+function selectItemCombobox(eleSelected) {
+    let data = eleSelected.data();
+    selectedItem = data;
+    combobox.val(data.text);
+    combobox.focus();
+    dataListEle.addClass('hide');
+}
+
+/**
+ * Hàm làm sạch danh sách của combobox.
+ */
 function clearDataList() {
     dataListEle.html('');
     dataListEle.addClass('hide');
