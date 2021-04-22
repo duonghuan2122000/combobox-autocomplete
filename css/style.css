@@ -46,6 +46,8 @@
     padding: 0;
     border: 1px solid #e5e5e5;
     width: 100%;
+    background-color: #fff;
+    position: absolute;
 }
 
 .cb-autocomplete .datalist.hide {

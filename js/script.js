@@ -34,6 +34,27 @@ let selectedItem = null;
 
 $(function () {
 
+    /**
+     * Lấy giá trị hiện tại của combobox.
+     */
+    cbBox.getValue = function () {
+        return selectedItem && selectedItem.value;
+    }
+
+    /**
+     * Lấy text hiện tại đang được chọn của combobox.
+     */
+    cbBox.getText = function () {
+        return selectedItem && selectedItem.text;
+    }
+
+    /**
+     * Lấy danh sách toggle của combobox.
+     */
+    cbBox.getData = function () {
+        return list;
+    }
+
     // sự kiện nhập vào input của combobox.
     combobox.on('input', function (e) {
         e.preventDefault();
@@ -45,7 +66,7 @@ $(function () {
         if (datalist.length == 0) {
             cbBox.addClass('error');
         }
-        bindDataListToHtml(datalist);
+        bindDataListToHtml(datalist, true);
         index = -1;
     });
 
@@ -56,11 +77,11 @@ $(function () {
     });
 
     // sự kiện click vào icon toggle của combobox.
-    cbBox.find('.icon').on('click', function (e) {
+    cbBox.find('.icon').on('mousedown', function (e) {
         e.preventDefault();
         if (dataListEle.hasClass('hide')) {
             combobox.focus();
-            bindDataListToHtml(list);
+            bindDataListToHtml(list, false);
             index = -1;
         } else {
             dataListEle.addClass('hide');
@@ -109,8 +130,12 @@ $(function () {
 /**
  * Hàm bind data vào html cho danh sách combobox.
  * @param {Array} datalist danh sách hiện tại của combobox.
+ * @param {Boolean} isInput Xác định đang nhập dữ liệu hay đang click vào icon toggle.
  */
-function bindDataListToHtml(datalist) {
+function bindDataListToHtml(datalist, isInput) {
+    if (isInput) {
+        selectedItem = null;
+    }
     dataListEle.html('');
     datalist.forEach((item) => {
         var dataItem = $(`
