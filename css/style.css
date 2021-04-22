@@ -1,0 +1,94 @@
+* {
+    box-sizing: border-box;
+}
+
+.cb-autocomplete {
+    position: relative;
+    display: inline-block;
+}
+
+.cb-autocomplete .field {
+    position: relative;
+    display: inline-block;
+}
+.cb-autocomplete .cb {
+    height: 40px;
+    font-size: 13px;
+    padding-left: 16px;
+    padding-right: 16px;
+    outline: none;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+}
+
+.cb-autocomplete .icon {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    top: 0px;
+    right: 0px;
+    background-image: url("../assets/chevron-down.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+    border-left: 1px solid #e5e5e5;
+    cursor: pointer;
+}
+
+.cb-autocomplete .cb:focus, 
+.cb-autocomplete .cb:focus + .icon {
+    border-color: green;
+}
+
+.cb-autocomplete .datalist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #e5e5e5;
+    width: 100%;
+}
+
+.cb-autocomplete .datalist.hide {
+    display: none;
+}
+
+.cb-autocomplete .datalist li {
+    height: 40px;
+    line-height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.cb-autocomplete .datalist li .item-icon {
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    background: none;
+}
+
+.cb-autocomplete .datalist li.selected {
+    background-color: green;
+}
+
+.cb-autocomplete .datalist li.selected .item-icon,
+.cb-autocomplete .datalist li.selected .item-text {
+    color: #fff;
+}
+
+.cb-autocomplete .datalist li.selected .item-icon {
+    background-image: url("../assets/icon-check.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+}
+
+.cb-autocomplete .datalist li:hover,
+.cb-autocomplete .datalist li.hover {
+    background-color: #e5e5e5;
+}
+
+.cb-autocomplete .datalist li:hover .item-text,
+.cb-autocomplete .datalist li.hover .item-text {
+    color: #000;
+}
