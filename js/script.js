@@ -61,10 +61,12 @@ $(function () {
         let val = $(this).val();
         if (val === '') {
             cbBox.removeClass('error');
+            cbBox.find('.cb').removeAttr('title');
         }
         let datalist = list.filter((item) => item.text.toLocaleLowerCase().includes(val.toLocaleLowerCase()));
         if (datalist.length == 0) {
             cbBox.addClass('error');
+            cbBox.find('.cb').attr('title', "Dữ liệu không tồn tại trong hệ thống.");
         }
         bindDataListToHtml(datalist, true);
         index = -1;
