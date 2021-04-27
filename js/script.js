@@ -36,7 +36,7 @@
         cbDiv.appendTo(cbBox);
         dataListEle.appendTo(cbBox);
 
-        container.html(cbBox);
+        container.replaceWith(cbBox);
 
         // sự kiện nhập vào input của combobox.
         combobox.on('input', function (e) {
@@ -150,6 +150,20 @@
             combobox.focus();
             dataListEle.addClass('hide');
         }
+
+        cbBox.getValue = function () {
+            return _options.selectedItem && _options.selectedItem.value ? _options.selectedItem.value : null;
+        }
+
+        cbBox.getText = function () {
+            return _options.selectedItem && _options.selectedItem.text ? _options.selectedItem.text : null;
+        }
+
+        cbBox.getData = function () {
+            return _options.list;
+        }
+
+        return cbBox;
     }
 }(jQuery));
 
@@ -159,4 +173,4 @@ const list = [
     { value: 2, text: "Khác" },
 ];
 
-$('.cbbox').initCbbox({ list });
+var cb = $('.cbbox').initCbbox({ list });
